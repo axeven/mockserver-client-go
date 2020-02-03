@@ -118,7 +118,7 @@ func WhenRequestBodyContainString(subString string) ExpectationOption {
 	return func(e *Expectation) *Expectation {
 		e.Request.Body = map[string]interface{}{
 			"type": "STRING",
-			"string": "some_string",
+			"string": subString,
 			"subString": "true",
 		}
 		return e
