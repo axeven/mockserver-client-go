@@ -14,10 +14,11 @@ type Expectation struct {
 
 // RequestMatcher is used to match which requests the expectation will be applied to
 type RequestMatcher struct {
-	Path                  string              `json:"path,omitempty"`
-	Method                string              `json:"method,omitempty"`
-	Headers               map[string][]string `json:"headers,omitempty"`
-	QueryStringParameters map[string][]string `json:"queryStringParameters,omitempty"`
+	Path                  string                 `json:"path,omitempty"`
+	Method                string                 `json:"method,omitempty"`
+	Headers               map[string][]string    `json:"headers,omitempty"`
+	QueryStringParameters map[string][]string    `json:"queryStringParameters,omitempty"`
+	Body                  map[string]interface{} `json:"body,omitempty"`
 }
 
 // ActionResponse defines what actions to take when a request is matched e.g. response, delay, forward etc.
@@ -110,6 +111,18 @@ func WhenRequestAuth(authToken string) ExpectationOption {
 		e.Request.Headers["authorization"] = []string{fmt.Sprintf("Bearer %s", authToken)}
 
 		return e
+	}
+}
+
+func WhenRequestBodyContainString(subString string) ExpectationOption {
+	return func(e *Expectation) *Expectation {
+		e.Request.Body = map[string]interface{}{
+			"type": "STRING",
+			"string": "some_string",
+			"subString": "true",
+		}
+		return e
+
 	}
 }
 
